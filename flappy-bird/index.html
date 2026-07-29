@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flappy Bird</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="game-container">
+    <canvas id="gameCanvas" width="640" height="480"></canvas>
+
+    <div id="hud" class="hidden">
+      <span id="scoreDisplay">0</span>
+    </div>
+
+    <div id="startScreen" class="overlay">
+      <h1>Flappy Bird</h1>
+      <button id="startBtn" class="big-btn">Start</button>
+    </div>
+
+    <div id="customizeScreen" class="overlay hidden">
+      <h2>Choose Background</h2>
+      <div class="option-row" id="bgOptions">
+        <button class="option-thumb selected" data-choice="bg1">
+          <img src="bg1.jpg" alt="Background 1"><span>bg1</span>
+        </button>
+        <button class="option-thumb" data-choice="bg2">
+          <img src="bg2.jpg" alt="Background 2"><span>bg2</span>
+        </button>
+        <button class="option-thumb" data-choice="bg3">
+          <img src="bg3.png" alt="Background 3"><span>bg3</span>
+        </button>
+      </div>
+
+      <h2>Choose Obstacle</h2>
+      <div class="option-row" id="towerOptions">
+        <button class="option-thumb selected" data-choice="tower1">
+          <img src="tower1.png" alt="Tower 1"><span>tower1</span>
+        </button>
+        <button class="option-thumb" data-choice="tower2">
+          <img src="tower2.png" alt="Tower 2"><span>tower2</span>
+        </button>
+      </div>
+
+      <button id="playBtn" class="big-btn">Play</button>
+    </div>
+
+    <div id="gameOverScreen" class="overlay hidden">
+      <h1>Game Over</h1>
+      <p class="final-score-label">Final Score: <span id="finalScore">0</span></p>
+      <button id="restartBtn" class="big-btn">Restart</button>
+    </div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
