@@ -1,4 +1,3 @@
-
 (function () {
   "use strict";
 
@@ -17,6 +16,8 @@
   const PIPE_SPAWN_INTERVAL = 1.4; // seconds between new pipe pairs
   const GAP_HEIGHT = 165;        // px vertical gap the bird flies through
   const GAP_EDGE_MARGIN = 60;    // px min distance of gap from top/bottom
+
+  const BG_SPEED = PIPE_SPEED * 0.4; // px/s, slower than pipes for parallax depth
 
   const BIRD_WIDTH = 68;
   const BIRD_HEIGHT = 48;        // matches bird1.png aspect ratio (408x288)
@@ -93,6 +94,7 @@
   let score = 0;
   let spawnTimer = 0;
   let lastTimestamp = null;
+  let bgScrollX = 0;
 
   function resetRound() {
     bird = {
@@ -172,6 +174,16 @@
     e.preventDefault();
     flap();
   });
+
+  // ------------------------------------------------------------------
+  // Background (moving)
+  // ------------------------------------------------------------------
+  function updateBackground(dt) {
+    bgScrollX -= BG_SPEED * dt;
+    if (bgScrollX <= -CANVAS_WIDTH) {
+      bgScrollX += CANVAS_WIDTH;
+    }
+  }
 
   // ------------------------------------------------------------------
   // Pipes
@@ -275,7 +287,12 @@
   // Drawing
   // ------------------------------------------------------------------
   function drawBackground() {
-    ctx.drawImage(images[selectedBg], 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    const img = images[selectedBg];
+    // Two copies side by side, both shifted by bgScrollX (which cycles over
+    // [-CANVAS_WIDTH, 0]), so one tile is always sliding in as the other
+    // slides out â€” an endless, seamless-looking scroll.
+    ctx.drawImage(img, bgScrollX, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    ctx.drawImage(img, bgScrollX + CANVAS_WIDTH, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
   }
 
   function drawPipes() {
@@ -334,6 +351,7 @@
     lastTimestamp = timestamp;
 
     if (state === STATE.PLAYING) {
+      updateBackground(dt);
       updateBird(dt);
       updatePipes(dt);
       if (checkCollisions()) {
